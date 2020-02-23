@@ -2,8 +2,13 @@ import React from "react";
 import logo from "./logo.svg";
 import "./App.css";
 
-function Child({ onAction }) {
-  return <button onClick={onAction}> Click Me!</button>;
+function Child({ onAction, onHandleReset }) {
+  return (
+    <p>
+      <button onClick={onAction}>Click Me! </button>{" "}
+      <button onClick={onHandleReset}> Reset</button>
+    </p>
+  );
 }
 
 class CountingParent extends React.Component {
@@ -15,6 +20,7 @@ class CountingParent extends React.Component {
     this.state = { actionCount: 0 };
     // Bind the event handler function, so that its // `this` binding isn't lost when it gets passed // to the button
     this.handleAction = this.handleAction.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   handleAction(action) {
@@ -25,10 +31,18 @@ class CountingParent extends React.Component {
     });
   }
 
+  handleReset(action) {
+    console.log("Reset button", action);
+
+    this.setState({
+      actionCount: 0
+    });
+  }
+
   render() {
     return (
       <div>
-        <Child onAction={this.handleAction} />{" "}
+        <Child onAction={this.handleAction} onHandleReset={this.handleReset} />{" "}
         <p>Clicked {this.state.actionCount} times</p>
       </div>
     );
