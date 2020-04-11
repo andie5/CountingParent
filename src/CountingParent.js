@@ -1,5 +1,4 @@
 import React from "react";
-import logo from "./logo.svg";
 import "./App.css";
 
 function Child({ onAction, onHandleReset }) {
@@ -9,6 +8,40 @@ function Child({ onAction, onHandleReset }) {
       <button onClick={onHandleReset}> Reset</button>
     </p>
   );
+}
+
+class CountingParentArrowFunction extends React.Component {
+  // initialize state with a property initializer
+  // you can access this.props if needed
+  state = { actionCount: 0 };
+
+  // writing the handler as an arrow function
+  // means it will retain the proper value of
+  // `this`, so we can avoid having to bind it
+  handleAction = (action) => {
+    console.log("Child says", action);
+    // Replace actionCount with an incremented value this.setState({
+    this.setState({
+      actionCount: this.state.actionCount + 1,
+    });
+  };
+
+  handleReset = (action) => {
+    console.log("Reset button", action);
+
+    this.setState({
+      actionCount: 0,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+        <Child onAction={this.handleAction} onHandleReset={this.handleReset} />{" "}
+        <p>Clicked {this.state.actionCount} times</p>
+      </div>
+    );
+  }
 }
 
 class CountingParent extends React.Component {
@@ -27,7 +60,7 @@ class CountingParent extends React.Component {
     console.log("Child says", action);
     // Replace actionCount with an incremented value this.setState({
     this.setState({
-      actionCount: this.state.actionCount + 1
+      actionCount: this.state.actionCount + 1,
     });
   }
 
@@ -35,7 +68,7 @@ class CountingParent extends React.Component {
     console.log("Reset button", action);
 
     this.setState({
-      actionCount: 0
+      actionCount: 0,
     });
   }
 
@@ -54,6 +87,11 @@ const CountingParentMain = () => (
     <CountingParent />
     <CountingParent />
     <CountingParent />
+    <br />
+    CountingParentArrowFunction
+    <CountingParentArrowFunction />
+    <CountingParentArrowFunction />
+    <CountingParentArrowFunction />
   </div>
 );
 
